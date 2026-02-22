@@ -27,10 +27,10 @@ mkdir -p "$OUTPUT_DIR"
 CLONE_DIR="$HOME/hdmapping-benchmark"
 
 ROS1_REPOS=(
+"benchmark-FAST-LIO-to-HDMapping"
 "benchmark-DLO-to-HDMapping"
 "benchmark-Super-LIO-to-HDMapping"
 "benchmark-DLIO-to-HDMapping"
-"benchmark-FAST-LIO-to-HDMapping"
 "benchmark-Faster-LIO-to-HDMapping"
 "benchmark-iG-LIO-to-HDMapping"
 "benchmark-I2EKF-LO-to-HDMapping"
@@ -44,20 +44,20 @@ ROS1_REPOS=(
 )
 
 ROS2_REPOS=(
+"benchmark-RESPLE-to-HDMapping"
 "benchmark-SuperOdometry-to-HDMapping"
 "benchmark-KISS-ICP-to-HDMapping"
 "benchmark-GenZ-ICP-to-HDMapping"
-"benchmark-GLIM-to-HDMapping"
-"benchmark-RESPLE-to-HDMapping"
 "benchmark-lidar_odometry_ros_wrapper-to-HDMapping"
 "benchmark-mola_lidar_odometry-to-HDMapping"
+"benchmark-GLIM-to-HDMapping"
 )
 
 ROS1_ALGOS=(
+  "fast-lio"    
   "dlo"
   "super-lio"
   "dlio"
-  "fast-lio"
   "faster-lio"
   "ig-lio"
   "i2ekf-lo"
@@ -69,13 +69,13 @@ ROS1_ALGOS=(
   "point-lio"
   "voxel-map"
 )
+
 for i in "${!ROS1_ALGOS[@]}"; do
     algo="${ROS1_ALGOS[$i]}"
     repo="${ROS1_REPOS[$i]}"
     OUTPUT="$OUTPUT_DIR/$algo"
     mkdir -p "$OUTPUT"
 
-    # Wybór inputu
     if [[ "$algo" == "dlio" || "$algo" == "dlo" || "$algo" == "loam" || "$algo" == "ct-icp" || "$algo" == "lego-loam" || "$algo" == "lio-ekf" ]]; then
         INPUT="${ROS1_BAG}-pc"
     else
@@ -93,13 +93,23 @@ for i in "${!ROS1_ALGOS[@]}"; do
     echo "=== Finished $algo ==="
 done
 
+ROS2_ALGOS=(
+  "resple"
+  "superOdom"
+  "kiss-icp"
+  "genz-icp"
+  "lidar_odometry_ros_wrapper"
+  "mola"
+  "glim"
+)
+
 for i in "${!ROS2_ALGOS[@]}"; do
     algo="${ROS2_ALGOS[$i]}"
     repo="${ROS2_REPOS[$i]}"
     OUTPUT="$OUTPUT_DIR/$algo"
     mkdir -p "$OUTPUT"
 
-    if [[ "$algo" == "resple" ]]; then
+    if [[ "$algo" == "resple" || "$algo" == "superOdom" ]]; then
         INPUT="${ROS2_BAG_DIR}-lidar"
     else
         INPUT="$ROS2_BAG_DIR"
